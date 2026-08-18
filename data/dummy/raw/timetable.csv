@@ -1,0 +1,22 @@
+timetable_id,section,day_of_week,start_time,end_time,subject_name,subject_code,faculty_id,room_id
+1,AIML-3A,Monday,09:00,10:00,Machine Learning,AIML301,101,1
+2,AIML-3A,Monday,10:00,11:00,Deep Learning,AIML302,102,1
+3,AIML-3A,Monday,11:00,12:00,Machine Learning,AIML301,101,1
+4,AIML-3A,Monday,12:00,13:00,Lunch Break,BREAK,,,
+5,AIML-3A,Monday,13:30,14:30,Natural Language Processing,AIML303,104,2
+6,AIML-3A,Monday,14:30,15:30,Data Structures Lab,AIML304L,103,4
+7,AIML-3A,Tuesday,09:00,10:00,Deep Learning,AIML302,102,1
+8,AIML-3A,Tuesday,10:00,11:00,Natural Language Processing,AIML303,104,1
+9,AIML-3A,Tuesday,11:00,12:00,Machine Learning,AIML301,101,1
+10,AIML-3A,Tuesday,13:30,15:30,Machine Learning Lab,AIML301L,101,4
+11,AIML-3A,Wednesday,09:00,10:00,Machine Learning,AIML301,101,1
+12,AIML-3A,Wednesday,10:00,11:00,Deep Learning,AIML302,102,1
+13,AIML-3A,Wednesday,11:00,12:00,Natural Language Processing,AIML303,104,1
+14,AIML-3A,Wednesday,13:30,14:30,Data Structures,AIML304,103,2
+15,AIML-3A,Thursday,09:00,10:00,Natural Language Processing,AIML303,104,1
+16,AIML-3A,Thursday,10:00,11:00,Machine Learning,AIML301,101,1
+17,AIML-3A,Thursday,11:00,12:00,Deep Learning,AIML302,102,1
+18,AIML-3A,Thursday,13:30,15:30,Deep Learning Lab,AIML302L,102,4
+19,AIML-3A,Friday,09:00,10:00,Data Structures,AIML304,103,2
+20,AIML-3A,Friday,10:00,11:00,Machine Learning,AIML301,101,1
+21,AIML-3A,Friday,11:00,12:00,Deep Learning,AIML302,102,1

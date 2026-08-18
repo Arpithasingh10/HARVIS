@@ -1,0 +1,7 @@
+faculty_id,faculty_name,department_id,designation,cabin_room,email
+101,Dr. Arvind Kumar,2,Associate Professor,A-204,arvind.kumar@hitam.ac.in
+102,Dr. Lakshmi Prasanna,2,Assistant Professor,A-206,lakshmi.p@hitam.ac.in
+103,Dr. Suresh Babu,1,Professor,A-108,suresh.babu@hitam.ac.in
+104,Ms. Divya Sree,2,Assistant Professor,A-207,divya.sree@hitam.ac.in
+105,Dr. Ramesh Varma,1,HOD & Professor,A-101,ramesh.varma@hitam.ac.in
+106,Mr. Nikhil Reddy,4,Assistant Professor,A-305,nikhil.reddy@hitam.ac.in

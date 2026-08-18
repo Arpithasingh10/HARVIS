@@ -1,0 +1,6 @@
+room_id,room_number,building,floor,capacity,room_type
+1,302,Block A,3,70,Lecture Hall
+2,304,Block A,3,70,Lecture Hall
+3,201,Block A,2,60,Lecture Hall
+4,LAB-5,Block A,1,40,Computer Lab
+5,105,Block A,1,80,Seminar Hall

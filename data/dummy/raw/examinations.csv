@@ -1,0 +1,5 @@
+exam_id,section,subject_name,subject_code,exam_type,exam_date,start_time,end_time,room_id
+1,AIML-3A,Machine Learning,AIML301,Mid-1,2026-09-14,10:00,11:30,3
+2,AIML-3A,Deep Learning,AIML302,Mid-1,2026-09-16,10:00,11:30,3
+3,AIML-3A,Natural Language Processing,AIML303,Mid-1,2026-09-18,10:00,11:30,3
+4,AIML-3A,Data Structures,AIML304,Mid-1,2026-09-20,10:00,11:30,3
