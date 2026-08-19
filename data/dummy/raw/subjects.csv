@@ -1,0 +1,32 @@
+subject_id,subject_name,subject_code,branch_id
+1,Machine Learning,CSM401,1
+2,Deep Learning,CSM402,1
+3,Natural Language Processing,CSM403,1
+4,Data Mining,CSM404,1
+5,Major Project,CSM405,1
+6,Data Analytics,CSD401,2
+7,Big Data,CSD402,2
+8,Machine Learning,CSD403,2
+9,Data Visualization,CSD404,2
+10,Major Project,CSD405,2
+11,Machine Learning,CSE401,3
+12,Cloud Computing,CSE402,3
+13,Software Engineering,CSE403,3
+14,Distributed Systems,CSE404,3
+15,Major Project,CSE405,3
+16,Professional Elective,CSE406,3
+17,Microwave Engineering,ECE401,4
+18,VLSI Design,ECE402,4
+19,Embedded Systems,ECE403,4
+20,Wireless Communications,ECE404,4
+21,Major Project,ECE405,4
+22,Power Systems,EEE401,5
+23,Electrical Machines,EEE402,5
+24,Control Systems,EEE403,5
+25,Renewable Energy Systems,EEE404,5
+26,Major Project,EEE405,5
+27,Thermal Engineering,MECH401,6
+28,CAD/CAM,MECH402,6
+29,Robotics,MECH403,6
+30,Industrial Engineering,MECH404,6
+31,Major Project,MECH405,6

@@ -1,7 +1,15 @@
-faculty_id,faculty_name,department_id,designation,cabin_room,email
-101,Dr. Arvind Kumar,2,Associate Professor,A-204,arvind.kumar@hitam.ac.in
-102,Dr. Lakshmi Prasanna,2,Assistant Professor,A-206,lakshmi.p@hitam.ac.in
-103,Dr. Suresh Babu,1,Professor,A-108,suresh.babu@hitam.ac.in
-104,Ms. Divya Sree,2,Assistant Professor,A-207,divya.sree@hitam.ac.in
-105,Dr. Ramesh Varma,1,HOD & Professor,A-101,ramesh.varma@hitam.ac.in
-106,Mr. Nikhil Reddy,4,Assistant Professor,A-305,nikhil.reddy@hitam.ac.in
+faculty_id,faculty_name,branch_id,designation,cabin_room,email
+101,Dr. Arvind Kumar,1,Associate Professor,A-204,arvind.kumar@hitam.ac.in
+102,Dr. Lakshmi Prasanna,1,Assistant Professor,A-206,lakshmi.p@hitam.ac.in
+103,Ms. Divya Sree,1,Assistant Professor,A-207,divya.sree@hitam.ac.in
+104,Dr. Suresh Babu,3,Professor,A-108,suresh.babu@hitam.ac.in
+105,Dr. Ramesh Varma,3,HOD & Professor,A-101,ramesh.varma@hitam.ac.in
+106,Mr. Nikhil Reddy,3,Assistant Professor,A-305,nikhil.reddy@hitam.ac.in
+107,Dr. Meena Iyer,2,Associate Professor,A-210,meena.iyer@hitam.ac.in
+108,Mr. Karthik Rao,2,Assistant Professor,A-211,karthik.rao@hitam.ac.in
+109,Dr. Priya Nair,4,Professor,B-101,priya.nair@hitam.ac.in
+110,Mr. Sandeep Reddy,4,Assistant Professor,B-104,sandeep.reddy@hitam.ac.in
+111,Dr. Kiran Kumar,5,Professor,B-201,kiran.kumar@hitam.ac.in
+112,Ms. Anjali Menon,5,Assistant Professor,B-203,anjali.menon@hitam.ac.in
+113,Dr. Vijay Prakash,6,Professor,C-101,vijay.prakash@hitam.ac.in
+114,Mr. Rahul Sharma,6,Assistant Professor,C-103,rahul.sharma@hitam.ac.in
