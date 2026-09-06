@@ -1,0 +1,287 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * HARVIS design system — futuristic academic command center.
+ * Palette: near-black / deep navy surfaces, electric cyan primary accent,
+ * restrained amber as the only secondary accent. All colors are oklch tokens.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-grid: var(--grid);
+  --font-display: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Inter Tight", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  --radius: 0.35rem;
+
+  --background: oklch(0.16 0.028 258);
+  --foreground: oklch(0.94 0.008 240);
+
+  --surface: oklch(0.2 0.03 258);
+  --surface-raised: oklch(0.24 0.032 258);
+  --grid: oklch(0.32 0.04 240 / 22%);
+
+  --card: oklch(0.2 0.03 258);
+  --card-foreground: oklch(0.94 0.008 240);
+  --popover: oklch(0.2 0.03 258);
+  --popover-foreground: oklch(0.94 0.008 240);
+
+  --primary: oklch(0.82 0.15 205);
+  --primary-foreground: oklch(0.16 0.028 258);
+
+  --secondary: oklch(0.26 0.032 258);
+  --secondary-foreground: oklch(0.9 0.01 240);
+
+  --muted: oklch(0.24 0.028 258);
+  --muted-foreground: oklch(0.66 0.022 240);
+
+  --accent: oklch(0.8 0.13 78);
+  --accent-foreground: oklch(0.16 0.028 258);
+
+  --destructive: oklch(0.64 0.19 22);
+  --destructive-foreground: oklch(0.97 0.01 240);
+
+  --border: oklch(0.34 0.036 240 / 55%);
+  --input: oklch(0.3 0.034 250);
+  --ring: oklch(0.82 0.15 205);
+
+  --glow-primary: 0 0 0 1px oklch(0.82 0.15 205 / 22%), 0 0 32px oklch(0.72 0.15 205 / 22%);
+  --glow-soft: 0 0 24px oklch(0.72 0.15 205 / 14%);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: oklch(0.82 0.15 205 / 30%);
+  }
+}
+
+/* ---------- Utilities ---------- */
+
+@utility hud-grid {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+@utility hud-vignette {
+  background: radial-gradient(
+    ellipse 90% 70% at 50% 40%,
+    oklch(0.28 0.05 235 / 45%) 0%,
+    transparent 70%
+  );
+}
+
+@utility label-tech {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+@utility panel {
+  background: linear-gradient(
+    160deg,
+    oklch(0.22 0.03 258 / 92%),
+    oklch(0.18 0.028 258 / 92%)
+  );
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+@utility glow-ring {
+  box-shadow: var(--glow-primary);
+}
+
+@utility text-glow {
+  text-shadow: 0 0 18px oklch(0.82 0.15 205 / 45%);
+}
+
+/* Corner brackets for HUD panels */
+@utility bracketed {
+  position: relative;
+}
+
+/* ---------- Motion ---------- */
+
+@keyframes harvis-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.95;
+  }
+}
+
+@keyframes harvis-spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes harvis-spin-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes harvis-scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes harvis-bar {
+  0%,
+  100% {
+    transform: scaleY(0.25);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes harvis-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-harvis-pulse {
+  animation: harvis-pulse 2s ease-in-out infinite;
+}
+.animate-spin-slow {
+  animation: harvis-spin-slow 22s linear infinite;
+}
+.animate-spin-reverse {
+  animation: harvis-spin-reverse 34s linear infinite;
+}
+.animate-scan {
+  animation: harvis-scan 3.2s linear infinite;
+}
+.animate-bar {
+  animation: harvis-bar 0.9s ease-in-out infinite;
+}
+.animate-fade-up {
+  animation: harvis-fade-up 0.4s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-harvis-pulse,
+  .animate-spin-slow,
+  .animate-spin-reverse,
+  .animate-scan,
+  .animate-bar,
+  .animate-fade-up {
+    animation: none !important;
+  }
+}
+
+/* ---------- Refined core motion ---------- */
+
+@keyframes harvis-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.035);
+    opacity: 0.9;
+  }
+}
+
+@keyframes harvis-ring-pulse {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+}
+
+@keyframes harvis-sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-breathe {
+  animation: harvis-breathe 5.5s ease-in-out infinite;
+}
+.animate-ring-pulse {
+  animation: harvis-ring-pulse 2.4s ease-out infinite;
+}
+.animate-sweep {
+  animation: harvis-sweep 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-breathe,
+  .animate-ring-pulse,
+  .animate-sweep {
+    animation: none !important;
+  }
+}

@@ -1,9 +1,16 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Session
 
 from ..models.classroom import Classroom
 from ..models.faculty import Faculty
 from ..models.subject import Subject
 from ..models.timetable import Timetable
+
+
+def _format_time(time_value: str) -> str:
+    """Convert HH:MM timetable time to student-friendly 12-hour format."""
+    return datetime.strptime(time_value, "%H:%M").strftime("%I:%M %p").lstrip("0")
 
 
 def get_class_at_time(
@@ -49,8 +56,11 @@ def get_class_at_time(
             )
             room_number = room.room_number if room else "an unlisted room"
 
+            start_time = _format_time(row.start_time)
+            end_time = _format_time(row.end_time)
+
             return (
-                f"You have {subject_name} at {row.start_time} "
+                f"You have {subject_name} from {start_time} to {end_time} "
                 f"in Room {room_number} with {faculty_name} "
                 f"({day_of_week})."
             )
