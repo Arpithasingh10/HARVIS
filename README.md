@@ -68,6 +68,33 @@ HARVIS/
 
 ## Local Setup
 
+### Firebase student accounts and profiles
+
+The frontend uses the existing Firebase Authentication Email/Password provider
+and Firestore. Create a Firebase web app in the existing project, then copy
+`frontend/.env.example` to `frontend/.env.local` and fill in the web app config
+values. The configuration is read by Vite; do not commit `.env.local`.
+
+Publish the repository Firestore rules to the same Firebase project (set the
+project with `firebase use --add` if needed, then run
+`firebase deploy --only firestore:rules`). Firebase Authentication's
+Email/Password provider must remain enabled. The frontend only permits emails
+ending in `@hitam.org`.
+
+After sign-in, HARVIS reads `users/{uid}`. A first-time student is asked to
+complete a profile; returning students with `profileCompleted: true` go to the
+dashboard. Passwords are never written to Firestore. The Profile menu allows
+students to view details and update only their current year or section.
+
+Academic knowledge is separate from `users`. The frontend includes a scoped
+Firestore query helper for `academic_data`, `subjects`, `faculty`, `timetables`,
+`examinations` and `activities`; it filters by branch, section, batch and
+academic year. The corresponding Firestore read rules enforce the same scope.
+Scoped academic documents should include `branch`, `section`, `batch`,
+`academicYear`, `source` and `updatedAt` metadata.
+These collections are a future data foundation and are not populated with PDFs
+or real institutional records by this change.
+
 ```bash
 # clone
 git clone <repo-url> && cd HARVIS
@@ -79,7 +106,7 @@ pip install -r ../requirements.txt
 cp ../.env.example ../.env   # fill in local DB credentials
 uvicorn app.main:app --reload
 
-# frontend (once scaffolded)
+# frontend
 cd ../frontend
 npm install
 npm run dev

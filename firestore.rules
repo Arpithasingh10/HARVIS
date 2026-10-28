@@ -1,0 +1,102 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function profilePath() {
+      return /databases/$(database)/documents/users/$(request.auth.uid);
+    }
+
+    function hasCompletedProfile() {
+      return request.auth != null
+        && exists(profilePath())
+        && get(profilePath()).data.profileCompleted == true;
+    }
+
+    function validProfile(data, uid) {
+      return data.keys().hasAll([
+          'uid', 'email', 'fullName', 'rollNumber', 'branch', 'batch',
+          'section', 'currentYear', 'profileCompleted', 'createdAt', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'uid', 'email', 'fullName', 'rollNumber', 'branch', 'batch',
+          'section', 'currentYear', 'profileCompleted', 'createdAt', 'updatedAt'
+        ])
+        && data.uid == uid
+        && data.email == request.auth.token.email
+        && data.email.matches('^[^@]+@hitam[.]org$')
+        && data.fullName is string
+        && data.fullName.size() > 0
+        && data.fullName.size() <= 100
+        && data.rollNumber is string
+        && data.rollNumber.matches('^[0-9]{2}[A-Z0-9]{8}$')
+        && data.branch in ['EEE', 'MECH', 'ECE', 'CSE', 'CSM', 'CSD']
+        && data.batch is string
+        && data.batch.matches('^[0-9]{4}-[0-9]{4}$')
+        && data.section.matches('^[A-Z]$')
+        && data.currentYear is int
+        && data.currentYear >= 1
+        && data.currentYear <= 4
+        && data.profileCompleted == true;
+    }
+
+    function matchesStudentScope(data) {
+      return hasCompletedProfile()
+        && data.branch == get(profilePath()).data.branch
+        && data.section == get(profilePath()).data.section
+        && data.batch == get(profilePath()).data.batch
+        && data.academicYear == get(profilePath()).data.currentYear;
+    }
+
+    match /users/{uid} {
+      allow get: if request.auth != null && request.auth.uid == uid;
+      allow list: if false;
+
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && validProfile(request.resource.data, uid)
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+
+      allow update: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['currentYear', 'section', 'updatedAt'])
+        && request.resource.data.currentYear is int
+        && request.resource.data.currentYear >= 1
+        && request.resource.data.currentYear <= 4
+        && request.resource.data.section.matches('^[A-Z]$')
+        && request.resource.data.updatedAt == request.time;
+
+      allow delete: if false;
+    }
+
+    match /academic_data/{documentId} {
+      allow get, list: if matchesStudentScope(resource.data);
+      allow create, update, delete: if false;
+    }
+
+    match /subjects/{documentId} {
+      allow get, list: if matchesStudentScope(resource.data);
+      allow create, update, delete: if false;
+    }
+
+    match /faculty/{documentId} {
+      allow get, list: if matchesStudentScope(resource.data);
+      allow create, update, delete: if false;
+    }
+
+    match /timetables/{documentId} {
+      allow get, list: if matchesStudentScope(resource.data);
+      allow create, update, delete: if false;
+    }
+
+    match /examinations/{documentId} {
+      allow get, list: if matchesStudentScope(resource.data);
+      allow create, update, delete: if false;
+    }
+
+    match /activities/{documentId} {
+      allow get, list: if matchesStudentScope(resource.data);
+      allow create, update, delete: if false;
+    }
+  }
+}

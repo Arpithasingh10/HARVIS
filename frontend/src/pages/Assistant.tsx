@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { TriangleAlert } from "lucide-react";
 
 import { AIOrb } from "../components/AIOrb";
-import { Header, type StudentContextValue } from "../components/Header";
+import { Header } from "../components/Header";
 import { ResponsePanel } from "../components/ResponsePanel";
 import { StatusIndicator, StateFlow, STATE_LABEL, type HarvisState } from "../components/StatusIndicator";
 import { TranscriptPanel } from "../components/TranscriptPanel";
@@ -11,8 +11,15 @@ import { SystemStatusStrip } from "../components/SystemStatusStrip";
 import { InteractionHistory, type Interaction } from "../components/InteractionHistory";
 import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
 import { useSpeechSynthesis } from "../hooks/useSpeechSynthesis";
-import { HarvisApiError, fetchBranches, postQuery } from "../services/api";
+import {
+  HarvisApiError,
+  fetchBranches,
+  postQuery,
+  resolveStudentSessionContext,
+  type SessionContext,
+} from "../services/api";
 import { formatTimesInText, nowLabel } from "../utils/timeFormatter";
+import type { StudentProfile } from "../services/studentProfile";
 
 const EXAMPLES = [
   "What class do I have at 11 on Monday?",
@@ -28,11 +35,15 @@ const ERROR_COPY = {
 } as const;
 
 export function Assistant({
-  context,
-  onReset,
+  profile,
+  onProfile,
+  onLogout,
+  actionError,
 }: {
-  context: StudentContextValue;
-  onReset: () => void;
+  profile: StudentProfile;
+  onProfile: () => void;
+  onLogout: () => void;
+  actionError?: string | null;
 }) {
   const [state, setState] = useState<HarvisState>("idle");
   const [transcript, setTranscript] = useState<string | null>(null);
@@ -43,8 +54,31 @@ export function Assistant({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [online, setOnline] = useState(false);
   const [history, setHistory] = useState<Interaction[]>([]);
+  const [sessionContext, setSessionContext] = useState<SessionContext | null>(null);
+  const [contextLoading, setContextLoading] = useState(true);
 
   const { speak, cancel, speaking } = useSpeechSynthesis();
+
+  useEffect(() => {
+    let cancelled = false;
+    setSessionContext(null);
+    setContextLoading(true);
+
+    resolveStudentSessionContext(profile)
+      .then((context) => {
+        if (!cancelled) setSessionContext(context);
+      })
+      .catch(() => {
+        if (!cancelled) setSessionContext(null);
+      })
+      .finally(() => {
+        if (!cancelled) setContextLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [profile]);
 
   const runQuery = useCallback(
     async (text: string) => {
@@ -55,15 +89,21 @@ export function Assistant({
       setErrorMessage(null);
       setState("processing");
 
-      try {
-        const result = await postQuery(
-          {
-            year: context.year,
-            branch_id: context.branchId,
-            section_id: context.sectionId,
-          },
-          text,
+      if (contextLoading) {
+        setErrorMessage("HARVIS is loading your academic data scope. Try again in a moment.");
+        setState("idle");
+        return;
+      }
+      if (!sessionContext) {
+        setErrorMessage(
+          "Timetable data for your branch, section and year is not available yet.",
         );
+        setState("idle");
+        return;
+      }
+
+      try {
+        const result = await postQuery(sessionContext, text);
         const spoken = formatTimesInText(result.answer ?? "");
         setAnswer(spoken);
         setIntent(result.intent);
@@ -89,7 +129,7 @@ export function Assistant({
         setState("idle");
       }
     },
-    [context, speak],
+    [contextLoading, sessionContext, speak],
   );
 
   const recognition = useSpeechRecognition({
@@ -142,9 +182,20 @@ export function Assistant({
       <div className="hud-vignette pointer-events-none fixed inset-0" />
 
       <div className="relative z-10">
-        <Header context={context} state={state} online={online} onReset={onReset} />
+        <Header
+          profile={profile}
+          state={state}
+          online={online}
+          onProfile={onProfile}
+          onLogout={onLogout}
+        />
 
         <main className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-12">
+          {actionError ? (
+            <div role="alert" className="lg:col-span-2 rounded-md border border-destructive/40 bg-destructive/10 p-4 text-sm text-foreground/90">
+              {actionError}
+            </div>
+          ) : null}
           {/* Core */}
           <section className="flex flex-col items-center gap-6 lg:sticky lg:top-28">
             <AIOrb state={state} onActivate={startListening} disabled={busy} />

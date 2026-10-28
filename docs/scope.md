@@ -13,7 +13,9 @@ then update anything that references it.
   (timetable, faculty, rooms, exam dates).
 - No RAG, no LLM, no NLP intent model yet at Milestone 0 / v0.1.
 - Web interface only. No WhatsApp, mobile app, or voice interface.
-- Single-user, session-based conversation context (no auth/user accounts yet).
+- Firebase Email/Password authentication gates the student dashboard. College
+  accounts use the `@hitam.org` domain and their academic profile is stored
+  separately in Firestore. The current academic-data prototype remains dummy data.
 
 ## Proposed System (target for this academic project, v0.2 → v1.0)
 

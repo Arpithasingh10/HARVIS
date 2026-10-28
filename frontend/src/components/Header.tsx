@@ -1,4 +1,5 @@
 import { StatusIndicator, type HarvisState } from "./StatusIndicator";
+import type { StudentProfile } from "../services/studentProfile";
 
 export type StudentContextValue = {
   year: number;
@@ -14,15 +15,17 @@ function sectionLabel(name: string): string {
 }
 
 export function Header({
-  context,
+  profile,
   state,
   online,
-  onReset,
+  onProfile,
+  onLogout,
 }: {
-  context: StudentContextValue;
+  profile: StudentProfile;
   state: HarvisState;
   online: boolean;
-  onReset: () => void;
+  onProfile: () => void;
+  onLogout: () => void;
 }) {
   return (
     <header className="sticky top-0 z-20 border-b border-border bg-background/85 backdrop-blur-md">
@@ -54,18 +57,32 @@ export function Header({
           </span>
 
           <span className="max-w-full rounded-full border border-border bg-surface/70 px-3 py-1.5 label-tech text-center text-foreground/80 sm:max-w-[32rem]">
-            {context.yearLabel} • {context.branchName} • {sectionLabel(context.sectionName)}
+            Year {profile.currentYear} • {profile.branch} • {sectionLabel(profile.section)}
           </span>
 
           <StatusIndicator state={state} className="hidden sm:inline-flex" />
 
-          <button
-            type="button"
-            onClick={onReset}
-            className="rounded-full border border-border px-3 py-1.5 label-tech transition-colors hover:border-primary/50 hover:text-primary"
-          >
-            Change
-          </button>
+          <details className="relative">
+            <summary className="max-w-44 cursor-pointer list-none truncate rounded-full border border-primary/40 bg-surface px-3 py-2 label-tech text-foreground transition-colors hover:border-primary hover:text-primary">
+              {profile.fullName} <span aria-hidden="true">▼</span>
+            </summary>
+            <div className="absolute right-0 z-30 mt-2 w-44 overflow-hidden rounded-md border border-border bg-surface-raised shadow-xl">
+              <button
+                type="button"
+                onClick={onProfile}
+                className="block w-full px-4 py-3 text-left text-sm text-foreground transition-colors hover:bg-primary/10 hover:text-primary"
+              >
+                Profile
+              </button>
+              <button
+                type="button"
+                onClick={onLogout}
+                className="block w-full border-t border-border px-4 py-3 text-left text-sm text-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+              >
+                Logout
+              </button>
+            </div>
+          </details>
         </div>
       </div>
     </header>

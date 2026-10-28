@@ -8,7 +8,7 @@ export const API_BASE_URL =
   "http://127.0.0.1:8000";
 
 export type Branch = { id: number; name: string; code?: string | undefined };
-export type Section = { id: number; name: string };
+export type Section = { id: number; name: string; year?: number | undefined };
 
 export type SessionContext = {
   year: number;
@@ -48,7 +48,12 @@ async function getJson<T>(path: string): Promise<T> {
 /** Normalises whatever shape the backend returns into { id, name }. */
 function normalizeList(
   raw: unknown,
-): Array<{ id: number; name: string; code?: string | undefined }> {
+): Array<{
+  id: number;
+  name: string;
+  code?: string | undefined;
+  year?: number | undefined;
+}> {
   const response = raw as {
     value?: unknown[];
     items?: unknown[];
@@ -80,12 +85,15 @@ function normalizeList(
         id,
     );
 
+    const rawCode = record["code"] ?? record["branch_code"];
     const code =
-      record["code"] === undefined
+      rawCode === undefined
         ? undefined
-        : String(record["code"]);
+        : String(rawCode);
+    const year =
+      record["year"] === undefined ? undefined : Number(record["year"]);
 
-    return { id, name, code };
+    return { id, name, code, year };
   });
 }
 
@@ -95,6 +103,32 @@ export async function fetchBranches(): Promise<Branch[]> {
 
 export async function fetchSections(branchId: number): Promise<Section[]> {
   return normalizeList(await getJson<unknown>(`/branches/${branchId}/sections`));
+}
+
+export async function resolveStudentSessionContext(profile: {
+  branch: string;
+  section: string;
+  currentYear: number;
+}): Promise<SessionContext | null> {
+  const branches = await fetchBranches();
+  const branch = branches.find(
+    (item) => item.code?.toUpperCase() === profile.branch.toUpperCase(),
+  );
+  if (!branch) return null;
+
+  const sections = await fetchSections(branch.id);
+  const section = sections.find(
+    (item) =>
+      item.year === profile.currentYear &&
+      item.name.trim().toUpperCase() === profile.section.toUpperCase(),
+  );
+  if (!section) return null;
+
+  return {
+    year: profile.currentYear,
+    branch_id: branch.id,
+    section_id: section.id,
+  };
 }
 
 export async function postQuery(
